@@ -1,6 +1,6 @@
-# Netatmo Weather on Stream Deck
+# Netatmo Weather on Elgato Stream Deck
 
-This little Python script runs a web server which is basically a wrapper for the great [gonetatmo](https://github.com/tanaikech/gonetatmo) CLI utility I found that can output your Netatmo data in JSON, which we can then use with the [API Ninja Plugin](https://barraider.com/) for your Stream Deck to show your Netatmo data on your Stream Deck.
+This little Python script runs a web server which is basically a wrapper for the great [gonetatmo](https://github.com/tanaikech/gonetatmo) CLI utility I found that can output your Netatmo data in JSON, which we can then use with the [API Ninja Plugin](https://barraider.com/) to show your Netatmo weather on your Stream Deck.
 
 For Windows users I have made a self-contained `.exe` that you can just run immediately. It contains [gonetatmo](https://github.com/tanaikech/gonetatmo) and everything so you can just run it and input your credentials and you are good to go.
 
