@@ -23,7 +23,7 @@ Once everything is up and running you can drag out a API Ninja square to your de
 - (Optional) Title Suffix: `°C`
 - Reponse Type: Response is Text
 - Autorun every: 15 mins
-	- By default the shimmy script refreshes every 900 seconds (10 mins), so making it any shorter than that is unecessary. But it doesn't hurt either.
+	- By default the shimmy script refreshes every 900 seconds (15 mins), so making it any shorter than that is unecessary. But it doesn't hurt either.
 - (Optional) Hide the green success indiciator
 
 All other fields should be left blank or default.
