@@ -28,6 +28,6 @@ Once everything is up and running you can drag out a API Ninja square to your de
 
 All other fields should be left blank or default.
 
-Once done, and if you use the Android app's icon, you should end up with something like this:
+Once done, and after you've set some custom icons, you should end up with something like this:
 
-![Result](https://lambdan.se/img/RustyHomelyLorikeet.png)
+![Result](https://lambdan.se/img/shellfish/6950193.jpg)
