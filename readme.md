@@ -2,7 +2,7 @@
 
 This little Python script runs a web server which is basically a wrapper for the great [gonetatmo](https://github.com/tanaikech/gonetatmo) CLI utility I found that can output your Netatmo data in JSON, which we can then use with the [API Ninja Plugin](https://barraider.com/) to show your Netatmo weather on your Stream Deck.
 
-For Windows users I have made a self-contained `.exe` that you can just run immediately. It contains [gonetatmo](https://github.com/tanaikech/gonetatmo) and everything so you can just run it and input your credentials and you are good to go.
+For Windows users I have made a [self-contained .exe](https://github.com/lambdan/netatmo-stream-deck/releases/tag/main) that you can just run immediately. It contains [gonetatmo](https://github.com/tanaikech/gonetatmo) and everything so you can just run it and input your credentials and you are good to go.
 
 If you prefer doing this manually or use Linux/Mac, you will have to install [gonetatmo](https://github.com/tanaikech/gonetatmo) to your $PATH and then run `shimmy.py`, ideally in a `screen` session or something.
 
