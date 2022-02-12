@@ -1,22 +1,22 @@
 # Netatmo Weather on Elgato Stream Deck
 
-This little Python script runs a web server which is basically a wrapper for the great [gonetatmo](https://github.com/tanaikech/gonetatmo) CLI utility I found that can output your Netatmo data in JSON, which we can then use with the [API Ninja Plugin](https://barraider.com/) to show your Netatmo weather on your Stream Deck.
+This little Python script runs a web server which uses the [Netatmo library](https://pypi.org/project/netatmo/) to output Netatmo data in JSON, which we can then use with the [API Ninja Plugin](https://barraider.com/) to show your Netatmo weather on your Stream Deck.
 
-For Windows users I have made a [self-contained .exe](https://github.com/lambdan/netatmo-stream-deck/releases/tag/main) that you can just run immediately. It contains [gonetatmo](https://github.com/tanaikech/gonetatmo) and everything so you can just run it and input your credentials and you are good to go.
+For Windows users I have made a [self-contained .exe](https://github.com/lambdan/netatmo-stream-deck/releases/tag/main) that you can just run immediately. 
 
-If you prefer doing this manually or use Linux/Mac, you will have to install [gonetatmo](https://github.com/tanaikech/gonetatmo) to your $PATH and then run `shimmy.py`, ideally in a `screen` session or something.
+If you prefer doing this manually or use Linux/Mac, you can just download `netatmo-server.py` and install the required libraries and run it, ideally hidden in a screen or something.
 
 Eitherway, you will need to register an app at Netatmo to get API keys. It's free, no worries: https://dev.netatmo.com/apps/
 
 Once everything is up and running you can drag out a API Ninja square to your deck and configure it as follows:
 
 - Request Type: GET
-- API URL: `http://localhost:5551`
+- API URL: `http://localhost:5552`
 - Content Type: `application/json`
 - Response Shown: 
-	- For indoors: `stations[0].insideData[0].Temperature` 
-	- For outdoors: `stations[0].outsideData[0].Temperature`
-	- Depending on your setup you might have to change some things around, maybe some 0's should be 1's. It should be pretty easy to figure out.
+	- For indoors: `dashboard_data.Temperature` 
+	- For outdoors: `modules[0].dashboard_data.Temperature`
+	- Depending on your setup you might have to change some things around, it should be pretty easy to figure out by looking at the json (available at http://localhost:5552)
 	- (There are also a bunch of other fields you can use, like humidity, feel free to do whatever you want)
 - (Optional) Title Prefix: `Outdoor\n\n\n`
 	- A bunch of `\n`'s to push the label up and keeping the temperature along the bottom
