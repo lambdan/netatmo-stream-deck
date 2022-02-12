@@ -1,8 +1,11 @@
-from flask import Flask, redirect, send_file, jsonify, Response, cli
-import time, subprocess, yaml, sys, os
+from flask import Flask, redirect, jsonify, Response
+import time, subprocess, sys, os
 from gevent.pywsgi import WSGIServer
 
-INTERVAL = 10*60 # wait this many seconds between weather refreshes
+INTERVAL = 15*60 # wait this many seconds between weather refreshes
+
+refreshed = 0
+wjson = ""
 
 app = Flask(__name__)
 
@@ -19,7 +22,7 @@ if not os.path.isfile("gonetatmo.cfg"):
 
 	print("Setting up gonetatmo... this might take a sec")
 	output = subprocess.check_output(["gonetatmo", "--clientid", CLIENT_ID, "--clientsecret", CLIENT_SECRET, "--email", EMAIL, "--password", PASSWORD, "-j"], encoding="utf8")
-	if "Updated" in output and "stations" in output:
+	if "Updated" in output and "{" in output:
 		print("Success! We are good to go!")
 	else:
 		print("Hmm, something went wrong...")
@@ -31,11 +34,14 @@ def refreshWeather():
 	global wjson
 	global refreshed
 	print("Refreshing weather")
-	wjson = subprocess.check_output(["gonetatmo", "-j"], encoding="utf8")
-	refreshed = time.time()
-
-refreshed = 0
-wjson = ""
+	output = subprocess.check_output(["gonetatmo", "-j"], encoding="utf8")
+	
+	lines = output.split("\n")
+	for line in lines:
+		if line.startswith("{"):
+			wjson = line
+			refreshed = time.time()
+			return
 
 @app.route('/')
 def index():
