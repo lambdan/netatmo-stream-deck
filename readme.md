@@ -2,7 +2,7 @@
 
 This little Python script runs a web server which uses the [Netatmo library](https://pypi.org/project/netatmo/) to output Netatmo data in JSON, which we can then use with the [API Ninja Plugin](https://barraider.com/) to show your Netatmo weather on your Stream Deck.
 
-For Windows users I have made a [self-contained .exe](https://github.com/lambdan/netatmo-stream-deck/releases/tag/main) that you can just run immediately. 
+For Windows users I have made a self-contained exe that you can just run immediately (find it on the [Releases](https://github.com/lambdan/netatmo-stream-deck/releases) page.)
 
 If you prefer doing this manually or use Linux/Mac, you can just download `netatmo-server.py` and install the required libraries and run it, ideally hidden in a screen or something.
 
