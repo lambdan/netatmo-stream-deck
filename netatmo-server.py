@@ -1,9 +1,14 @@
 from flask import Flask, redirect, Response
 from gevent.pywsgi import WSGIServer
 import netatmo, time, os, json
+from datetime import datetime
 
 INTERVAL = 15*60 # wait this many seconds between weather refreshes
 CONFIG_FILE = "netatmo.cfg"
+
+LOGGING = True
+LOG_INDOOR = "netatmo_indoor.tsv"
+LOG_OUTDOOR = "netatmo_outdoor.tsv"
 
 refreshed = 0
 wjson = ""
@@ -54,6 +59,41 @@ def refreshWeather():
 	wjson = json_output
 	refreshed = time.time()
 
+	if LOGGING:
+		j = json.loads(wjson)
+		indoor = ""
+		outdoor = ""
+		
+		if not os.path.isfile(LOG_INDOOR):
+			# create headers (first row) if file doesnt exist
+			indoor += "Date/Time (UTC)\tTemperature\tCO2\tHumidity\tNoise\tPressure\tAbsolute Pressure\n"
+
+		if not os.path.isfile(LOG_OUTDOOR):
+			outdoor += "Date/Time\tTemperature\tHumidity\n"
+		
+		# add data
+
+		# DateTime	IndoorTemp	IndoorCO2	IndoorHumidity	IndoorNoise	IndoorPressure
+		#indoor += str(j["dashboard_data"]["time_utc"]) + "\t"
+		indoor += datetime.fromtimestamp(j["dashboard_data"]["time_utc"]).strftime("%Y-%m-%d %H:%M:%S") + "\t"
+		indoor += str(j["dashboard_data"]["Temperature"]) + "\t"
+		indoor += str(j["dashboard_data"]["CO2"]) + "\t"
+		indoor += str(j["dashboard_data"]["Humidity"]) + "\t"
+		indoor += str(j["dashboard_data"]["Noise"]) + "\t"
+		indoor += str(j["dashboard_data"]["Pressure"]) + "\t"
+		indoor += str(j["dashboard_data"]["AbsolutePressure"]) + "\n"
+
+		# OutdoorTemp	OutdoorHumidity
+		#outdoor += str(j["modules"][0]["dashboard_data"]["time_utc"]) + "\t"
+		outdoor += datetime.fromtimestamp(j["modules"][0]["dashboard_data"]["time_utc"]).strftime("%Y-%m-%d %H:%M:%S") + "\t"
+		outdoor += str(j["modules"][0]["dashboard_data"]["Temperature"]) + "\t"
+		outdoor += str(j["modules"][0]["dashboard_data"]["Humidity"]) + "\n"
+
+		with open(LOG_INDOOR, "a") as f:
+			f.write(indoor)
+
+		with open(LOG_OUTDOOR, "a") as f:
+			f.write(outdoor)
 
 @app.route('/')
 def index():
