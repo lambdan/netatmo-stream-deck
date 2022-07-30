@@ -7,8 +7,8 @@ INTERVAL = 15*60 # wait this many seconds between weather refreshes
 CONFIG_FILE = "netatmo.cfg"
 
 LOGGING = True
-LOG_INDOOR = "netatmo_indoor.tsv"
-LOG_OUTDOOR = "netatmo_outdoor.tsv"
+LOG_INDOOR = ""
+LOG_OUTDOOR = ""
 
 refreshed = 0
 wjson = ""
@@ -63,6 +63,9 @@ def refreshWeather():
 		j = json.loads(wjson)
 		indoor = ""
 		outdoor = ""
+
+		LOG_INDOOR = str( datetime.fromtimestamp(j["modules"][0]["dashboard_data"]["time_utc"]).strftime("%Y-%m") ) + ".indoor.tsv"
+		LOG_OUTDOOR = str( datetime.fromtimestamp(j["modules"][0]["dashboard_data"]["time_utc"]).strftime("%Y-%m") ) + ".outdoor.tsv"
 		
 		if not os.path.isfile(LOG_INDOOR):
 			# create headers (first row) if file doesnt exist
@@ -131,4 +134,6 @@ if __name__ == "__main__":
 	print("(Note that Netatmo doesn't constantly poll your weather either, so refreshing it every second is very uneccessary)")
 	print("If you close this window the server will die. Feel free to minimize it though :)")
 
+	refreshWeather()
 	http_server.serve_forever()
+
