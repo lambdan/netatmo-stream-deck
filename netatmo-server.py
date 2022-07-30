@@ -1,4 +1,4 @@
-from flask import Flask, redirect, Response
+from flask import Flask, redirect, Response, send_file, url_for
 from gevent.pywsgi import WSGIServer
 import netatmo, time, os, json
 from datetime import datetime
@@ -109,6 +109,18 @@ def index():
 def forceRefresh():
 	refreshWeather()
 	return redirect('/')
+
+@app.route("/dl")
+def DLindex():
+	return '<h1><a href="' + url_for('DLindoor') + '">Indoor</a><br><a href="' + url_for('DLoutdoor') + '">Outdoor</a></h1>'
+
+@app.route("/dl/indoor")
+def DLindoor():
+	return send_file(LOG_INDOOR, as_attachment=True, download_name="Indoor (" + str(datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H.%M.%S")) + ").tsv")
+
+@app.route("/dl/outdoor")
+def DLoutdoor():
+	return send_file(LOG_OUTDOOR, as_attachment=True, download_name="Outdoor (" + str(datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H.%M.%S")) + ").tsv")
 
 if __name__ == "__main__":
 	#app.run(debug=False, port=5551, host='0.0.0.0')
