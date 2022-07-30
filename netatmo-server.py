@@ -48,6 +48,8 @@ def refreshWeather():
 
 	global refreshed
 	global wjson
+	global LOG_INDOOR
+	global LOG_OUTDOOR
 
 	ws.get_data()
 	json_output = ""
@@ -64,7 +66,7 @@ def refreshWeather():
 		indoor = ""
 		outdoor = ""
 
-		LOG_INDOOR = str( datetime.fromtimestamp(j["modules"][0]["dashboard_data"]["time_utc"]).strftime("%Y-%m") ) + ".indoor.tsv"
+		LOG_INDOOR = str( datetime.fromtimestamp(j["dashboard_data"]["time_utc"]).strftime("%Y-%m") ) + ".indoor.tsv"
 		LOG_OUTDOOR = str( datetime.fromtimestamp(j["modules"][0]["dashboard_data"]["time_utc"]).strftime("%Y-%m") ) + ".outdoor.tsv"
 		
 		if not os.path.isfile(LOG_INDOOR):
@@ -115,15 +117,18 @@ def forceRefresh():
 
 @app.route("/dl")
 def DLindex():
-	return '<h1><a href="' + url_for('DLindoor') + '">Indoor</a><br><a href="' + url_for('DLoutdoor') + '">Outdoor</a></h1>'
+	s = "<h1>Download spreadsheets:</h1>"
+	s += '<h1><a href="' + url_for('DLindoor') + '">' + LOG_INDOOR + '</a></h1>' 
+	s += '<h1><a href="' + url_for('DLoutdoor') + '">' + LOG_OUTDOOR + '</a></h1>'
+	return s
 
 @app.route("/dl/indoor")
 def DLindoor():
-	return send_file(LOG_INDOOR, as_attachment=True, download_name="Indoor (" + str(datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H.%M.%S")) + ").tsv")
+	return send_file(LOG_INDOOR, as_attachment=True, download_name="(Downloaded " + str( datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H.%M.%S")) + ") " + LOG_INDOOR )
 
 @app.route("/dl/outdoor")
 def DLoutdoor():
-	return send_file(LOG_OUTDOOR, as_attachment=True, download_name="Outdoor (" + str(datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H.%M.%S")) + ").tsv")
+	return send_file(LOG_OUTDOOR, as_attachment=True, download_name="(Downloaded " + str( datetime.fromtimestamp(time.time()).strftime("%Y-%m-%d %H.%M.%S")) + ") " + LOG_OUTDOOR )
 
 if __name__ == "__main__":
 	#app.run(debug=False, port=5551, host='0.0.0.0')
