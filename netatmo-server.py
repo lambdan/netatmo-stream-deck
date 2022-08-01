@@ -117,10 +117,19 @@ def forceRefresh():
 
 @app.route("/dl")
 def DLindex():
-	s = "<h1>Download spreadsheets:</h1>"
-	s += '<h1><a href="' + url_for('DLindoor') + '">' + LOG_INDOOR + '</a></h1>' 
-	s += '<h1><a href="' + url_for('DLoutdoor') + '">' + LOG_OUTDOOR + '</a></h1>'
-	return s
+        s = "<h1>Download spreadsheets</h1>"
+        s += '<h1><a href="' + url_for('DLindoor') + '">Latest Indoor (' + LOG_INDOOR + ')</a></h1>'
+        s += '<h1><a href="' + url_for('DLoutdoor') + '">Latest Outdoor (' + LOG_OUTDOOR + ')</a></h1>'
+        s += '<h2>All</h2>'
+        for f in os.listdir("."):
+                if f.endswith('tsv'):
+                        s += '<li><a href="' + url_for('DLfile', file=f) + '">' + f + '</a></li>'
+        return s
+
+@app.route("/dl/<file>")
+def DLfile(file):
+        return send_file(file, as_attachment=True)
+
 
 @app.route("/dl/indoor")
 def DLindoor():
